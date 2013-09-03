@@ -1,0 +1,49 @@
+1 thift的基本数据类型
+
+基本类型：
+bool：布尔值，true 或 false，对应 Java 的 boolean
+byte：8 位有符号整数，对应 Java 的 byte
+i16：16 位有符号整数，对应 Java 的 short
+i32：32 位有符号整数，对应 Java 的 int
+i64：64 位有符号整数，对应 Java 的 long
+double：64 位浮点数，对应 Java 的 double
+string：utf-8编码的字符串，对应 Java 的 String
+ struct 结构体
+    list 有序的元素列表，类似于STL的vector
+    set 无序的不重复元素集，类似于STL的set
+    map key-value型的映射，类似于STL的map
+    exception 是一个继承于本地语言的exception基类
+    service 服务。包含多个函数接口(纯虚函数)
+容器类型：
+list：对应 Java 的 ArrayList
+set：对应 Java 的 HashSet
+map：对应 Java 的 HashMap
+
+
+服务端编码基本步骤：
+实现服务处理接口impl
+创建TProcessor
+创建TServerTransport
+创建TProtocol
+创建TServer
+启动Server
+
+
+客户端编码基本步骤
+创建Transport
+创建TProtocol
+
+
+数据传输协议
+TBinaryProtocol : 二进制格式.
+TCompactProtocol : 压缩格式
+TJSONProtocol : JSON格式
+TSimpleJSONProtocol : 提供JSON只写协议, 生成的文件很容易通过脚本语言解析
+
+######注意#############
+#客户端和服务端的协议要一致#
+#####################
+
+基于TTransport和TProtocol创建 Client
+调用Client的相应方法
+

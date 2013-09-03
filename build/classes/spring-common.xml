@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	   xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:tx="http://www.springframework.org/schema/tx" 
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+    					   http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+					       http://www.springframework.org/schema/aop 
+					       http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+					       http://www.springframework.org/schema/mvc 
+					       http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd 
+					       http://www.springframework.org/schema/tx  
+					       http://www.springframework.org/schema/tx/spring-tx-3.0.xsd 
+					       http://www.springframework.org/schema/context
+						   http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+    <!-- thrift连接池配置 -->
+    <bean id="connectionProvider" class="com.hao.pool.GenericConnectionProvider">
+        <property name="serviceIP" value="localhost" />
+        <property name="servicePort" value="9090" />
+        <property name="maxActive" value="10" />
+        <property name="maxIdle" value="10" />
+        <property name="testOnBorrow" value="true" />
+        <property name="testOnReturn" value="true" />
+        <property name="testWhileIdle" value="true" />
+        <property name="conTimeOut" value="2000" />
+    </bean>
+    
+    <!-- thrift连接管理配置  -->
+    <bean id="connectionManager" class="com.hao.pool.ConnectionManager">
+        <property name="connectionProvider" ref="connectionProvider" />
+    </bean>
+    
+    <!-- thrift连接AOP配置  -->
+    <aop:config proxy-target-class="true">
+        <aop:pointcut id="clientMethods" expression="execution(* com.hao.client.*.*(..))" />
+        <aop:advisor advice-ref="connectionManager" pointcut-ref="clientMethods" />
+    </aop:config>
+    
+    <!-- 客户端接口配置  -->
+    <bean class="com.qidea.pushserver.rpc.client.PushServiceClient">
+        <property name="connectionManager" ref="connectionManager" />
+    </bean>
+</beans>

@@ -1,0 +1,5 @@
+最基础的java包 （在libx下可以找到）
+log4j-1.2.16.jar
+slf4j-log4j12-1.5.8.jar
+slf4j-api-1.5.8.jar
+libthrift-0.8.0.jar
